@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Shop {
     address private owner;
     struct picture {
-        address address_wallet;
+        address addressWallet;
         string picName;
         string name;
         uint256 price;
@@ -17,7 +17,9 @@ contract Shop {
     }
     uint256 countID;
     string[] pathName;
+    string[] pictureName;
     uint256[] picID;
+    uint256[] prices;
 
     mapping(uint256 => picture) public pictures;
 
@@ -34,11 +36,13 @@ contract Shop {
         string memory path,
         string memory picName
     ) public {
-        pictures[countID].address_wallet = owner;
+        // ดักคนdeploy ถึงทำได้
+        require(msg.sender == owner, "You are not admin");
+        pictures[countID].addressWallet = owner;
         pictures[countID].picName = picName;
-        pictures[countID].name = "Piya";
+        pictures[countID].name = "Admin";
         pictures[countID].price = price;
-        pictures[countID].deliverAddress = "at Me";
+        pictures[countID].deliverAddress = "office";
         pictures[countID].tel = "02777777";
         pictures[countID].path = path;
         pictures[countID].status = 1;
@@ -47,22 +51,32 @@ contract Shop {
         delete picID;
         for (uint256 i = 1; i <= countID; i++) {
             if (pictures[i].status == 1) {
-                pathName.push(pictures[i].picName);
+                pathName.push(pictures[i].path);
                 picID.push(i);
+                pictureName.push(pictures[i].picName);
+                prices.push(pictures[i].price);
             }
         }
 
-        // keccak256(abi.encodePacked(pictures[i].status)) != keccak256(abi.encodePacked("Send"))
-        // pictures[countID] = picture(owner,picName,"Me",price,"at Me","027777",path,"Sell");
-        // return (owner,price,path); view returns (address,uint,string memory)
         countID++;
     }
 
-    function getPic() public view returns (string[] memory, uint256[] memory) {
-        return (pathName, picID);
+    function getPic()
+        public
+        view
+        returns (
+            string[] memory,
+            string[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
+    {
+        return (pathName, pictureName, picID, prices);
     }
 
     function sendPicture(uint256 id, string memory tracking) public {
+        // ดักคนdeploy ถึงทำได้
+        require(msg.sender == owner, "You are not admin");
         pictures[id].status = 3;
         pictures[id].trackingNumber = tracking;
 
@@ -76,22 +90,6 @@ contract Shop {
         }
     }
 
-    // modifier costs(uint _amount) {
-    //       require(
-    //          msg.value >= _amount,
-    //          "Not enough Ether provided."
-    //       );
-    //       _;
-    //       if (msg.value > _amount)
-    //          msg.sender.transfer(msg.value - _amount);
-    //    }
-    //    //msg ส่งมาตอนมีคนเรียก
-
-    //  function forceOwnerChange(address _newOwner) public payable costs(200 ether) {
-    //       owner = _newOwner;
-    //       if (uint(owner) & 0 == 1) return;
-    //    }
-
     function buyPicture(
         uint256 id,
         string memory name,
@@ -100,12 +98,12 @@ contract Shop {
     ) public payable {
         require(msg.value == pictures[id].price, "Not enough price");
 
-        address payable oldOwner = payable(pictures[id].address_wallet);
+        address payable oldOwner = payable(pictures[id].addressWallet);
 
         bool sent = oldOwner.send(msg.value);
         require(sent, "can not buy");
 
-        pictures[id].address_wallet = msg.sender;
+        pictures[id].addressWallet = msg.sender;
         pictures[id].name = name;
         pictures[id].deliverAddress = deliverAddress;
         pictures[id].tel = tel;

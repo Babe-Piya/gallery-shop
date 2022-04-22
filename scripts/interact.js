@@ -25,8 +25,8 @@ async function main() {
   console.log("The message is: " + message);
 
   console.log("Updating the message...");
-  const tx = await shopContract.createSellPic(100, "test1", "Moo");
-  await tx.wait();
+  // const tx = await shopContract.createSellPic(100, "/test1", "Moo");
+  // await tx.wait();
 
   const Newmessage = await shopContract.getPic();
   console.log("data is: " + Newmessage);
