@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "E:\\bcAlchemy\\blockchain-sol\\contracts\\shop.sol": {
-      "lastModificationDate": 1650562934480,
-      "contentHash": "34d8cb3f5a0c91253cb35ffa647ba81a",
+      "lastModificationDate": 1650978521268,
+      "contentHash": "5f4a0b02967764a5ee6ac95852e34077",
       "sourceName": "contracts/shop.sol",
       "solcConfig": {
         "version": "0.8.7",

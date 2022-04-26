@@ -49,6 +49,8 @@ contract Shop {
 
         delete pathName;
         delete picID;
+        delete pictureName;
+        delete prices;
         for (uint256 i = 1; i <= countID; i++) {
             if (pictures[i].status == 1) {
                 pathName.push(pictures[i].path);
@@ -82,10 +84,14 @@ contract Shop {
 
         delete pathName;
         delete picID;
+        delete pictureName;
+        delete prices;
         for (uint256 i = 1; i <= countID; i++) {
             if (pictures[i].status == 1) {
-                pathName.push(pictures[i].picName);
+                pathName.push(pictures[i].path);
                 picID.push(i);
+                pictureName.push(pictures[i].picName);
+                prices.push(pictures[i].price);
             }
         }
     }
