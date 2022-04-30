@@ -143,10 +143,12 @@ contract Shop {
         require(msg.value == pictures[id].price, "Not enough price");
         require(msg.sender != owner, "You are admin");
 
-        address payable oldOwner = payable(pictures[id].addressWallet);
+        // address payable oldOwner = payable(pictures[id].addressWallet);
 
-        bool sent = oldOwner.send(msg.value);
-        require(sent, "can not buy");
+        // bool sent = oldOwner.send(msg.value);
+        // require(sent, "can not buy");
+
+        payable(owner).transfer(msg.value);
 
         pictures[id].addressWallet = msg.sender;
         pictures[id].name = name;
